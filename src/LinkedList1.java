@@ -78,6 +78,7 @@ public class LinkedList1 {
 	
 	//move fast nd slow first
 	// move fast again if it isnot null
+	// O(N)
 	public int findMiddle()
 	{
 		Node slowptr= start;
@@ -97,6 +98,7 @@ public class LinkedList1 {
 	}
 	
 	//key is lenght-n+1
+	//time complexity is O(N)
 	public void finsNthElementfromLast(int num)
 	{
 		if(start==null)
