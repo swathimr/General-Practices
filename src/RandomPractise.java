@@ -15,6 +15,35 @@ public class RandomPractise {
 		swapWithoutTemp();
 		findMissingNumber();
 		findMaxInArray();
+		UnionIntersectionSortedArrays();
+	}
+
+	private static void UnionIntersectionSortedArrays() {
+		int[] arr1 = {1, 3, 4, 5, 7};
+		int[] arr2= {2, 3, 5, 6};
+		int i=0,j=0;
+		
+		//union implementation
+		// intersection is same, print only if both values are same
+		while(i<arr1.length && j<arr2.length)
+		{
+			if(arr1[i]<arr2[j])
+			{
+				System.out.print(arr1[i]);
+				i++;
+			}
+			else if(arr2[j]<arr1[i])
+			{
+				System.out.print(arr2[j]);
+				j++;
+			}
+			else if(arr1[i]==arr2[j])
+			{
+				System.out.print(arr1[i]);
+				i++;j++;
+			}
+		}
+		
 	}
 
 	private static void findMaxInArray() {

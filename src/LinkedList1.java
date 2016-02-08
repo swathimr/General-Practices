@@ -1,8 +1,9 @@
+import java.util.LinkedList;
 
 public class LinkedList1 {
 
-	private Node start;
-	private Node end;
+	static Node start;
+	static Node end;
 	private int length;
 	
 	public LinkedList1()
@@ -116,6 +117,35 @@ public class LinkedList1 {
 		}
 	}
 	
+	//detect and remove the cyclic loop
+	public int cyclicLoop()
+	{
+		Node slowPtr,fastPtr;
+		slowPtr=fastPtr=start;
+		while(fastPtr!=null && fastPtr.getLink()!=null)
+		{
+			slowPtr=slowPtr.getLink();
+			fastPtr=fastPtr.getLink();
+			if(fastPtr.getLink()!=null)
+			{
+				fastPtr.getLink();
+			}
+			if(fastPtr==slowPtr)
+			{
+				// has a loop remove
+				slowPtr=start;
+				while(slowPtr!=fastPtr.getLink())
+				{
+					slowPtr=slowPtr.getLink();
+					fastPtr=fastPtr.getLink();
+				}
+				fastPtr.setNext(null);
+				return 1;
+			}
+		}
+		return 0;
+	}
+
 	public static void main(String[] args) {
 		LinkedList1 llist=new LinkedList1();
 		llist.insertElement(10);
@@ -131,6 +161,7 @@ public class LinkedList1 {
 		int middleValue=llist.findMiddle();
 		System.out.println(middleValue);
 		llist.finsNthElementfromLast(3);
+		
 	}
 
 }
