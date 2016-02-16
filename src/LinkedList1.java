@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-
 public class LinkedList1 {
 
 	static Node start;
@@ -98,6 +96,22 @@ public class LinkedList1 {
 		return returnValue;
 	}
 	
+	public void reverseList()
+	{
+		Node current=null;
+		Node next=start;
+		Node prev=null;
+		while(next!=null)
+		{
+			current=next;
+			next=next.getLink();
+			current.setNext(prev);
+			prev=current;
+			System.out.println(prev.getData());
+		}
+		start=current;
+	}
+	
 	//key is lenght-n+1
 	//time complexity is O(N)
 	public void finsNthElementfromLast(int num)
@@ -161,7 +175,8 @@ public class LinkedList1 {
 		int middleValue=llist.findMiddle();
 		System.out.println(middleValue);
 		llist.finsNthElementfromLast(3);
-		
+		llist.reverseList();
+		llist.printList();
 	}
 
 }

@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -16,8 +17,14 @@ public class RandomPractise {
 		findMissingNumber();
 		findMaxInArray();
 		UnionIntersectionSortedArrays();
+		reverseArray();
+		checkMapsEqual();
+		CheckAnagram("mark","karm");
+		PalindromeWihtoutReverse("masddsam");
+		PalindromeWithStringReverse("masdgjhdsam");
 	}
 
+	// O(m+n) length of both the arrays
 	private static void UnionIntersectionSortedArrays() {
 		int[] arr1 = {1, 3, 4, 5, 7};
 		int[] arr2= {2, 3, 5, 6};
@@ -44,6 +51,33 @@ public class RandomPractise {
 			}
 		}
 		
+		// not needed for intersection
+		while(i<arr1.length)
+		{
+			System.out.println(arr1[i]);
+			i++;
+		}while(j<arr2.length)
+		{
+			System.out.println(arr2[j]);
+			j++;
+		}
+		
+	}
+	
+	//log n
+	private static void reverseArray()
+	{
+		int[] myArray ={1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+		for(int i=0;i<myArray.length/2;i++)
+		{
+			int temp =myArray[i];
+			myArray[i]=myArray[myArray.length-1-i];
+			myArray[myArray.length-1-i]=temp;
+		}
+		for(int num:myArray)
+		{
+		System.out.print(num);
+		}
 	}
 
 	private static void findMaxInArray() {
@@ -159,10 +193,75 @@ public class RandomPractise {
 			{
 				System.out.println("Buzz");
 			}
-			else
+			/*else
 			{
 				System.out.println(i);
+			}*/
+		}
+	}
+	
+	public static boolean PalindromeWihtoutReverse(String value)
+	{
+		boolean returnValue =false;
+		int half = (value.length()-1)/2;
+		int end = value.length()-1;
+		for(int i=0;i<half;i++)
+		{
+			if(value.charAt(i)==value.charAt(end))
+			{
+				returnValue =true;
+				end--;
 			}
+			else
+			{
+				returnValue =false;
+				break;
+			}
+		}
+		return returnValue;
+	}
+	
+	public static boolean PalindromeWithStringReverse(String Value)
+	{
+		boolean returnValue =false;
+		String reversedValue = new StringBuffer(Value).reverse().toString();
+		if(reversedValue.equalsIgnoreCase(Value))
+		{
+			returnValue =true;	
+		}
+		return returnValue;
+	}
+	
+	public static boolean CheckAnagram(String first,String second)
+	{
+		char[] firstVal = first.toCharArray();
+		char[] secondVal = second.toCharArray();
+		Arrays.sort(firstVal);
+		Arrays.sort(secondVal);
+		return Arrays.equals(firstVal,secondVal);
+	}
+	
+	private static void checkMapsEqual()
+	{
+		Map map = new HashMap();
+		map.put("AA","aaa");
+		map.put("BB","bbb");
+		map.put("CC","ccc");
+		map.put("DD","ddd");
+
+		Map map2 = new HashMap();
+		map2.put("BB","bbb");
+		map2.put("AA","aaa");
+		map2.put("DD","ddd");
+		map2.put("CC","ccc");
+
+		if(map.equals(map2))
+		{
+		    System.out.println("Eql");
+		}
+		else
+		{
+		    System.out.println("Not");
 		}
 	}
 
