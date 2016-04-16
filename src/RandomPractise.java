@@ -2,10 +2,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.Stack;
 
 public class RandomPractise {
 
@@ -19,11 +22,87 @@ public class RandomPractise {
 		UnionIntersectionSortedArrays();
 		reverseArray();
 		checkMapsEqual();
-		CheckAnagram("mark","karm");
-		PalindromeWihtoutReverse("masddsam");
-		PalindromeWithStringReverse("masdgjhdsam");
+		mergeTwosortedLists();
+		System.out.println();
+		eqlibriumIndexOfArray();
 	}
 
+	private static void eqlibriumIndexOfArray() {
+		int arr[]={-7,1,5,2,-4,3,0};
+		int sum=0;int leftSum=0;
+		for(int i=0;i<arr.length;i++)
+		{
+			sum+=arr[i];
+		}
+		for(int i=0;i<arr.length;i++)
+		{
+		sum-=arr[i];	// this is right sum
+		if(sum==leftSum)
+		{
+			System.out.println(arr[i]);
+		}
+		leftSum+=arr[i];
+		}
+	}
+	
+
+	//similar to union of two arrays
+	private static void mergeTwosortedLists() {
+		// TODO Auto-generated method stub
+		int[] arr1 = {1, 3, 4, 5, 7};
+		int[] arr2= {2, 3, 5, 6};
+		int i=0,j=0,k=0;
+		int[] mergedList=new int[arr1.length+arr2.length];
+		while(i<arr1.length&&j<arr2.length)
+		{
+			if(arr1[i]<arr2[j])
+			{
+			mergedList[k]=arr1[i];
+			k++;
+			i++;
+			}
+			else if(arr1[i]>arr2[j])
+			{
+				mergedList[k]=arr2[j];
+				j++;k++;
+			}
+			else if(arr1[i]==arr2[j])
+			{
+				mergedList[k]=arr1[i];
+				k++;
+				mergedList[k]=arr2[j];
+				k++;
+				i++;j++;
+			}
+		}
+		addRemainingElement(i,j,arr1,arr2);
+		while(i<arr1.length)
+		{
+			mergedList[k]=arr1[i];
+			k++;i++;
+		}
+		while(j<arr2.length)
+		{
+			mergedList[k]=arr2[j];
+			k++;j++;
+		}
+		for(int val:mergedList)
+		System.out.print(val);
+	}
+	
+	private static void addRemainingElement(int i,int j,int[] arr1,int[] arr2)
+	{
+		while(i<arr1.length)
+		{
+			System.out.println(arr1[i]);
+			i++;
+		}while(j<arr2.length)
+		{
+			System.out.println(arr2[j]);
+			j++;
+		}
+	}
+	
 	// O(m+n) length of both the arrays
 	private static void UnionIntersectionSortedArrays() {
 		int[] arr1 = {1, 3, 4, 5, 7};
@@ -50,17 +129,8 @@ public class RandomPractise {
 				i++;j++;
 			}
 		}
-		
+		addRemainingElement(i,j,arr1,arr2);
 		// not needed for intersection
-		while(i<arr1.length)
-		{
-			System.out.println(arr1[i]);
-			i++;
-		}while(j<arr2.length)
-		{
-			System.out.println(arr2[j]);
-			j++;
-		}
 		
 	}
 	
@@ -200,47 +270,6 @@ public class RandomPractise {
 		}
 	}
 	
-	public static boolean PalindromeWihtoutReverse(String value)
-	{
-		boolean returnValue =false;
-		int half = (value.length()-1)/2;
-		int end = value.length()-1;
-		for(int i=0;i<half;i++)
-		{
-			if(value.charAt(i)==value.charAt(end))
-			{
-				returnValue =true;
-				end--;
-			}
-			else
-			{
-				returnValue =false;
-				break;
-			}
-		}
-		return returnValue;
-	}
-	
-	public static boolean PalindromeWithStringReverse(String Value)
-	{
-		boolean returnValue =false;
-		String reversedValue = new StringBuffer(Value).reverse().toString();
-		if(reversedValue.equalsIgnoreCase(Value))
-		{
-			returnValue =true;	
-		}
-		return returnValue;
-	}
-	
-	public static boolean CheckAnagram(String first,String second)
-	{
-		char[] firstVal = first.toCharArray();
-		char[] secondVal = second.toCharArray();
-		Arrays.sort(firstVal);
-		Arrays.sort(secondVal);
-		return Arrays.equals(firstVal,secondVal);
-	}
-	
 	private static void checkMapsEqual()
 	{
 		Map map = new HashMap();
@@ -252,9 +281,10 @@ public class RandomPractise {
 		Map map2 = new HashMap();
 		map2.put("BB","bbb");
 		map2.put("AA","aaa");
-		map2.put("DD","ddd");
+		map2.put("DD","dddd");
 		map2.put("CC","ccc");
 
+		
 		if(map.equals(map2))
 		{
 		    System.out.println("Eql");
@@ -264,5 +294,4 @@ public class RandomPractise {
 		    System.out.println("Not");
 		}
 	}
-
 }

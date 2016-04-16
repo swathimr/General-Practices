@@ -11,6 +11,7 @@ public class LinkedList1 {
 		length=0;
 	}
 	
+	//O(1)
 	public void insertElement(int data)
 	{
 		Node newNode = new Node(data,null);
@@ -27,6 +28,7 @@ public class LinkedList1 {
 		}
 	}
 	
+	//O(n)
 	public void printList()
 	{
 		Node current=start;
@@ -37,6 +39,7 @@ public class LinkedList1 {
 		}
 	}
 	
+	//O(1)
 	public void insertAtFirst(int data)
 	{
 		Node newNode = new Node(data,null);
@@ -96,6 +99,7 @@ public class LinkedList1 {
 		return returnValue;
 	}
 	
+	// time compl - O(n),Space compl - O(1)
 	public void reverseList()
 	{
 		Node current=null;
@@ -112,8 +116,27 @@ public class LinkedList1 {
 		start=current;
 	}
 	
+	public void reversePrint(Node start)
+	{
+		if(start==null)
+		{}
+		else
+		{
+			reversePrint(start.getLink());
+			System.out.println(start.getData());
+		}
+	}
+	
+	//mergetwosortedlists
+	public void addTwoLists(){
+		
+	}
+	
 	//key is lenght-n+1
 	//time complexity is O(N)
+	//Other method would be to have two ptrs,slow nd fast ptr both pointing to start
+	// fast ptr moved till n element and then slow starts moving
+	//when fast is at the tail element,return the slowptrs data
 	public void finsNthElementfromLast(int num)
 	{
 		if(start==null)
@@ -168,6 +191,7 @@ public class LinkedList1 {
 		llist.insertAtFirst(9);
 		llist.insertElement(22);
 		llist.printList();
+		llist.reversePrint(start);
 		boolean searchVal=llist.searchElement(6);
 		System.out.println(searchVal);
 		searchVal=llist.searchElement(2);

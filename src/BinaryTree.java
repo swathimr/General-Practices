@@ -1,4 +1,3 @@
-package binarytree;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -78,8 +77,12 @@ public class BinaryTree {
 		if(node!=null)
 		{
 			System.out.println(node.val);
-			preOrderTraverse(node.leftChild);
+			if(node.leftChild!=null){
+				preOrderTraverse(node.leftChild);
+				}
+			if(node.rightChild!=null){
 			preOrderTraverse(node.rightChild);
+			}
 		}
 	}
 	
@@ -87,8 +90,12 @@ public class BinaryTree {
 	{
 		if(node!=null)
 		{
+			if(node.leftChild!=null){
 			postOrder(node.leftChild);
+			}
+			if(node.rightChild!=null){
 			postOrder(node.rightChild);
+			}
 			System.out.println(node.val);
 		}
 	}
@@ -118,22 +125,15 @@ public class BinaryTree {
 	//O(log n)
 	public BinaryNode lowestCommonAncestor(BinaryNode node, int value1,int value2 )
 	{
-		while(node!=null)
+		if(node.val<value1 && node.val<value2)
 		{
-			if(node.val>value1 && node.val>value2)
-			{
-				node=node.leftChild;
-			}
-			else if(node.val<value1 && node.val<value2)
-			{
-				node=node.rightChild;
-			}
-			else
-			{
-				return node;
-			}
+			return lowestCommonAncestor(node.rightChild, value1, value2);
 		}
-		return null;
+		if(node.val>value1 && node.val>value2)
+		{
+			return lowestCommonAncestor(node.leftChild, value1, value2);
+		}
+		return  node;
 	}
 	
 	//k distance from root
@@ -198,6 +198,36 @@ public class BinaryTree {
 		}
 	}
 	
+	public boolean isLeaf(BinaryNode node)
+	{
+		if(node==null)
+		{
+			return false;
+		}
+		if(node.leftChild==null && node.rightChild==null)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	
+	//time complexity O(n)
+	//space o(1)
+	public int sumOfLeftLeaves(BinaryNode node,int result)
+	{
+		if(node==null)
+		{
+			return 0;
+		}
+			if(isLeaf(node.leftChild))
+			{
+				result+=node.leftChild.val;
+			}
+			sumOfLeftLeaves(node.leftChild, result);
+			sumOfLeftLeaves(node.rightChild, result);
+			return result;
+	}
 	public static void main(String[] args) {
 		BinaryTree tree = new BinaryTree();
 		tree.addNode(50);
@@ -218,6 +248,7 @@ public class BinaryTree {
 		BinaryNode LCA=tree.lowestCommonAncestor(tree.rootNode, 15, 30);
 		System.out.println("Lowest Common Ancestor::"+LCA.val);
 		tree.printKNode(tree.rootNode, 1);
+		tree.sumOfLeftLeaves(tree.rootNode,0);
 	}
 
 }
