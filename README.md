@@ -24,6 +24,7 @@
   - Group anagrams
   - Compress strings
   - Balanced Parenthesis
+  - Isomorphic String
 7. Binary Tree
   - DFS
   - BFS
