@@ -19,7 +19,12 @@
   - Palindrome with and without String Reverse
   - Find Missing Number, Swap without temp
   - CheckAnagram / two Hashmaps are equal
-6. Binary Tree
+6. Strings
+  - Palindrome with and without string reverse
+  - Group anagrams
+  - Compress strings
+  - Balanced Parenthesis
+7. Binary Tree
   - DFS
   - BFS
   - Height of binaryTree
