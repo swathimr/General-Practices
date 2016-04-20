@@ -73,6 +73,7 @@ public class StringPractice {
 		System.out.println(buffer);
 		}
 	
+	// time complexity - O(knlogn) kstrings of length n
 	private static List<String> getListOfAnagrams()
 	{
 		String[] strs={"abc","dog","cab","bca","god","odg"};
@@ -103,6 +104,7 @@ public class StringPractice {
         return ret;
 	}
 	
+	// time complexity o(n) auxillary spcae - o(n)
 	private static void balanceParanthesis()
 	{
 		Scanner scan = new Scanner(System.in);
@@ -157,6 +159,49 @@ public class StringPractice {
 		getListOfAnagrams();
 		compressString("aaabbbcccc");
 		balanceParanthesis();
+		System.out.println(isomorphicString("paper","title"));
+		lengthOfLastWord();
+	}
+
+	private static boolean isomorphicString(String string1, String string2) {
+		if(string1.length()!=string2.length())
+		{
+			return false;
+		}
+		else
+		{
+			HashMap<Character, Character> hm=new HashMap<>();
+			for(int i=0;i<string1.length();i++)
+			{
+				char char1=string1.charAt(i);
+				char char2= string2.charAt(i);
+				if(hm.containsKey(char1)){
+					if(hm.get(char1)==char2)
+					{
+						continue;
+					}
+					else
+						return false;
+				}
+				else if(hm.containsValue(char2))
+					return false;
+				hm.put(char1, char2);
+			}
+			return true;
+		}
+	}
+
+	private static void lengthOfLastWord() {
+		String str="";
+		String val[]=str.split(" ");
+		if(val.length>1)
+		{
+			System.out.println(val[val.length-1]);
+		}
+		else
+		{
+			System.out.println("0");
+		}
 	}
 
 }

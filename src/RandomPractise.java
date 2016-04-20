@@ -25,6 +25,41 @@ public class RandomPractise {
 		mergeTwosortedLists();
 		System.out.println();
 		eqlibriumIndexOfArray();
+		fibonacciSeries(10);
+	}
+
+	private static int fibonacciRecusion(int num) {
+		if(num==1||num==2)
+		{
+			return 1;
+		}
+		return fibonacciRecusion(num-1)+fibonacciRecusion(num-2);	
+	}
+
+	//dynamic prg - time and space -o(n)
+	// recursion - exponential
+	private static void fibonacciSeries(int count) {
+		int[] feb = new int[count];
+        feb[0] = 0;
+        feb[1] = 1;
+        for(int i=2; i < count; i++){
+            feb[i] = feb[i-1] + feb[i-2];
+        }
+
+        System.out.println("Fibonacci Using dynamic programming");
+        for(int i=0; i< count; i++){
+                System.out.print(feb[i] + " ");
+        }
+        
+        //using recursion
+        for(int j=2; j < count; j++){
+            feb[j] = fibonacciRecusion(j);
+        }
+        System.out.println("\n Fibonacci Using recusion");
+        for(int i=0; i< count; i++){
+            System.out.print(feb[i] + " ");
+    }
+        
 	}
 
 	private static void eqlibriumIndexOfArray() {
