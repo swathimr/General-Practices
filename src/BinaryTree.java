@@ -72,6 +72,8 @@ public class BinaryTree {
 		return current;
 	}
 	
+	// iterative is DFS
+	//recursive approach
 	public void preOrderTraverse(BinaryNode node)
 	{
 		if(node!=null)
@@ -98,6 +100,36 @@ public class BinaryTree {
 			}
 			System.out.println(node.val);
 		}
+		
+		// postorder iterative approach 
+		//peek - if left and rchild is null print val
+		// if right is not null push val in to stack nad null the rchild similar for left
+		if(node==null)
+			return;
+		Stack<BinaryNode> stack= new Stack<BinaryNode>();
+		stack.push(node);
+		while(!stack.isEmpty())
+		{
+			BinaryNode temp=stack.peek();
+			if(temp.leftChild==null&temp.rightChild==null)
+			{
+				System.out.println(stack.pop().val);
+				
+			}
+			else
+			{
+				if(temp.rightChild!=null)
+				{
+					stack.push(temp.rightChild);
+					temp.rightChild=null;
+				}
+				if(temp.leftChild!=null)
+				{
+					stack.push(temp.leftChild);
+					temp.leftChild=null;
+				}
+			}
+		}				
 	}
 	
 	public void inOrderTraverse(BinaryNode node)
@@ -108,18 +140,81 @@ public class BinaryTree {
 			System.out.println(node.val);
 			inOrderTraverse(node.rightChild);
 		}
+		
+		// inorder traversal iterative approach
+		if(node==null)
+			return;
+		Stack<BinaryNode> stack=new Stack<BinaryNode>();
+		stack.push(node);
+		while(!stack.isEmpty())
+		{
+			BinaryNode temp=stack.peek();
+			if(temp.leftChild!=null)
+			{
+				stack.push(temp.leftChild);
+				temp.leftChild=null;
+			}
+			else
+			{
+				System.out.println(temp.val);
+				stack.pop();
+				if(temp.rightChild!=null)
+					stack.push(temp.rightChild);
+				
+			}
+		}
+		
+	}
+	
+	//time complexity o(n)
+	public BinaryNode sortedArrayToBST(int[] arr, int start, int end)
+	{
+		if(start>end)
+			return null;
+		int mid=(start+end)/2;
+		BinaryNode root=new BinaryNode(arr[mid]);
+		root.leftChild=sortedArrayToBST(arr, start, mid-1);
+		root.rightChild=sortedArrayToBST(arr, mid+1, end);
+		return root;
 	}
 	
 	public int heightOfBinaryTree(BinaryNode node)
 	{
 		if(node==null)
 		{
-			return 0;
+			return -1;
 		}
 		else
 		{
 			return 1+Math.max(heightOfBinaryTree(node.leftChild),heightOfBinaryTree(node.rightChild));
 		}
+	}
+	
+	public int minimumDepthOfBinaryTree(BinaryNode root)
+	{
+		if(root ==null)
+            return 0;
+        LinkedList<BinaryNode> node=new LinkedList<>();
+        LinkedList<Integer> counts=new LinkedList<>();
+        node.add(root);
+        counts.add(1);
+        while(!node.isEmpty()){
+        	BinaryNode temp=node.remove();
+            int count=counts.remove();
+            if(temp.leftChild==null && temp.rightChild==null)
+                return count;
+            if(temp.leftChild!=null)
+            {
+                node.add(temp.leftChild);
+                counts.add(count+1);
+            }
+            if(temp.rightChild!=null)
+            {
+                node.add(temp.rightChild);
+                counts.add(count+1);
+            }
+        }
+        return 0;
 	}
 	
 	//O(log n)
@@ -136,7 +231,7 @@ public class BinaryTree {
 		return  node;
 	}
 	
-	//k distance from root
+	//k distance from root O(n)
 	public void printKNode(BinaryNode node, int k)
 	{
 		if(node==null){
@@ -151,6 +246,7 @@ public class BinaryTree {
 		printKNode(node.rightChild, k-1);
 	}
 	
+	//levelorder
 	public void BFS(BinaryNode node)
 	{
 		Queue<BinaryNode> queue = new LinkedList<>();
@@ -174,6 +270,7 @@ public class BinaryTree {
 		}
 	}
 	
+	//preorder iterative
 	// non recursive
 	public void DFS(BinaryNode node)
 	{
@@ -187,13 +284,13 @@ public class BinaryTree {
 		{
 			BinaryNode nodeval = (BinaryNode) stack.pop();
 			System.out.println(nodeval.val);
-			if(nodeval.leftChild!=null)
-			{
-				stack.push(nodeval.leftChild);
-			}
 			if(nodeval.rightChild!=null)
 			{
 				stack.push(nodeval.rightChild);
+			}
+			if(nodeval.leftChild!=null)
+			{
+				stack.push(nodeval.leftChild);
 			}
 		}
 	}
@@ -228,6 +325,100 @@ public class BinaryTree {
 			sumOfLeftLeaves(node.rightChild, result);
 			return result;
 	}
+	
+	
+	// recursion, post order traversal technique
+	// if difference between them is greater return -1 else 1+math.max
+	// store height of each level and add 1 to it wen going up. hence time complexity o(n)
+	public int isBalanced(BinaryNode node)
+	{
+		if(node==null)
+			return 0;
+		int lefth=isBalanced(node.leftChild);
+		int righth=isBalanced(node.rightChild);
+		if(righth==-1 || lefth==-1)
+			return -1;
+		if(Math.abs(lefth-righth)>1)
+			return -1;
+		return 1+Math.max(lefth,righth);
+	}
+	
+	public void checkBalance(BinaryNode root)
+	{
+		if(root==null)
+			return;
+		int result=isBalanced(root);
+		if(result>0)
+			System.out.println("yes it is balanced");
+		else
+			System.out.println("false");
+	}
+	
+	/* method to check if path adds up to the sum
+	* returns boolean
+	* time complexity - O(n)
+	*/ 
+	public boolean hasPathSum(BinaryNode node, int sum) { 
+	
+	if(node==null)
+		return false;
+	int subSum = sum-node.val;
+	if(node.leftChild==null && node.rightChild==null)
+		return (subSum==0);
+	else{
+	  // otherwise check both subtrees
+	  if ( node.leftChild != null && hasPathSum(node.leftChild, subSum))
+		  return true;
+	  if ( node.rightChild != null && hasPathSum(node.rightChild, subSum))
+	        return true;
+	  return false;
+		}
+	}
+	
+	//gets maximum sum of all the paths recursive
+	public int maxPathSum(BinaryNode root) {
+		int max[] = new int[1]; 
+		max[0] = Integer.MIN_VALUE;
+		calculateSum(root, max);
+		return max[0];
+	}
+	
+	public int calculateSum(BinaryNode root,int[] max)
+	{
+		if(root==null)
+			return 0;
+		int left=calculateSum(root.leftChild, max);
+		int right=calculateSum(root.rightChild, max);
+		int current=Math.max(root.val+left,root.val+right);
+		max[0]=Math.max(max[0],Math.max(current, root.val+left+right));
+		return current;
+	}
+	
+	public BinaryNode invertTree(BinaryNode root)
+	{
+		Queue<BinaryNode> queue=new LinkedList();
+		if(root!=null)
+		{
+			queue.add(root);
+		}
+		while(!queue.isEmpty())
+		{
+			BinaryNode q=queue.poll();
+			if(q.leftChild!=null)
+			{
+				queue.add(q.leftChild);
+			}
+			if(q.rightChild!=null)
+			{
+				queue.add(q.rightChild);
+			}
+			BinaryNode temp=q.leftChild;
+			temp.leftChild=q.rightChild;
+			temp.rightChild=temp;
+		}
+		return root;
+	}
+	
 	public static void main(String[] args) {
 		BinaryTree tree = new BinaryTree();
 		tree.addNode(50);

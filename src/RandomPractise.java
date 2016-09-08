@@ -2,11 +2,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
 
@@ -14,52 +13,222 @@ public class RandomPractise {
 
 	public static void main(String[] args) {
 		fizzbuzz();
-		findDuplicatesArrayList();
-		reverseInteger();
-		swapWithoutTemp();
-		findMissingNumber();
+		findDuplicatesArrayList();		
 		findMaxInArray();
 		UnionIntersectionSortedArrays();
 		reverseArray();
 		checkMapsEqual();
+		System.out.println("Merging two sorted list");
 		mergeTwosortedLists();
 		System.out.println();
 		eqlibriumIndexOfArray();
-		fibonacciSeries(10);
+		bullsAndCows();
+		intersectionOfTwoArrays(); // unsorted;
+		maximumSubArray();
+		buyAndSellStock();
+		wordBreak();
+		ReversePolishNotation();
+		System.out.println("no of trailing zeroes are::"+trailingZeroes(10));
+		System.out.println("Peak element from the array is::"+peakElement());
+		findMinMaxInArray();
 	}
 
-	private static int fibonacciRecusion(int num) {
-		if(num==1||num==2)
-		{
-			return 1;
+	// finds max and min in an array lesser comparisons
+	private static void findMinMaxInArray() {
+		int a[]={5,1,4,-1,6,2,0};
+		if (a == null || a.length < 1)
+			return;
+	 
+		int min,max;
+		if(a[0]>a[1]){
+			max=a[0];
+			min=a[1];
 		}
-		return fibonacciRecusion(num-1)+fibonacciRecusion(num-2);	
+		else
+		{
+			max=a[1];
+			min=a[1];
+		}
+		for(int i=2;i<a.length-2;i++){
+			if(a[i]>a[i+1])
+			{
+				max=Math.max(a[i],max);
+				min=Math.min(a[i+1],min);
+			}
+			else
+			{
+				max=Math.max(a[i+1],max);
+				min=Math.min(a[i],min);
+			}
+			i+=2;
+		}
+		if (a.length % 2 == 1) {
+			min = Math.min(min, a[a.length - 1]);
+			max = Math.max(max, a[a.length - 1]);
+		}
+		System.out.println("min: " + min + "\nmax: " + max);	
 	}
 
-	//dynamic prg - time and space -o(n)
-	// recursion - exponential
-	private static void fibonacciSeries(int count) {
-		int[] feb = new int[count];
-        feb[0] = 0;
-        feb[1] = 1;
-        for(int i=2; i < count; i++){
-            feb[i] = feb[i-1] + feb[i-2];
+	private static int peakElement() {
+		int[] num={1, 2, 3, 1};
+		int max = num[0];
+        int index = 0;
+        for(int i=1; i<=num.length-2; i++){
+            int prev = num[i-1];
+            int curr = num[i];
+            int next = num[i+1];
+ 
+            if(curr > prev && curr > next && curr > max){
+                index = i;
+                max = curr;
+            }
         }
+ 
+        if(num[num.length-1] > max){
+            return num.length-1;
+        }
+ 
+        return index;
+	}
 
-        System.out.println("Fibonacci Using dynamic programming");
-        for(int i=0; i< count; i++){
-                System.out.print(feb[i] + " ");
+	private static int trailingZeroes(int n) {
+		 if (n < 0)
+			    return -1;
+	        int count=0;
+	     for(long i=5;n/i>=1;i *=5)
+	     {
+	         count += n/i;
+	     }
+	     return count;
+	}
+
+	private static int ReversePolishNotation() {
+		String[] tokens={"2", "1", "+", "3", "*"};
+		String token="+-*/";
+        Stack<String> stack=new Stack<String>();
+        int returnValue=0;
+        for(String t:tokens)
+        {
+            if(!token.contains(t))
+                stack.push(t);
+            else
+            {
+                int a=Integer.valueOf(stack.pop());
+                int b=Integer.valueOf(stack.pop());
+                int index=token.indexOf(t);
+                switch(index){
+                    case 0:
+                        stack.push(String.valueOf(a+b));
+                        break;
+                    case 1:
+                        stack.push(String.valueOf(b-a));
+                        break;
+                    case 2:
+                        stack.push(String.valueOf(a*b));
+                        break;
+                    case 3:
+                        stack.push(String.valueOf(b/a));
+                        break;
+                }
+            }
         }
-        
-        //using recursion
-        for(int j=2; j < count; j++){
-            feb[j] = fibonacciRecusion(j);
-        }
-        System.out.println("\n Fibonacci Using recusion");
-        for(int i=0; i< count; i++){
-            System.out.print(feb[i] + " ");
-    }
-        
+        returnValue=Integer.valueOf(stack.pop());
+        System.out.println("Reverse Polish Notation"+returnValue);
+        return returnValue;
+	}
+
+	//O(n^2)
+	private static void wordBreak() {
+		String s="catsanddog";
+		HashSet dict=new HashSet();
+		dict.add("cat");
+		dict.add("cats");
+		dict.add("and");
+		dict.add("sand");
+		dict.add("dog");
+		int[] arr=new int[s.length()+1];
+		Arrays.fill(arr, -1);
+		arr[0]=0;
+		System.out.println("Word Break PArt 1 :::");
+		for(int i=0;i<s.length();i++)
+		{
+			if(arr[i]!=-1)
+			{
+				for(int j=i+1;j<=s.length();j++)
+				{
+					String sub=s.substring(i, j);
+					if(dict.contains(sub))
+						System.out.println(sub);
+						arr[j]=i;
+				}
+			}
+		}
+		System.out.println(Arrays.toString(arr)+"words can be broken:::"+String.valueOf(arr[s.length()]!=-1));
+	}
+
+
+	private static void buyAndSellStock() {
+		int prices[]={7, 1, 5, 3, 6, 4};
+		int result=0;
+		int min=prices[0];
+		for(int i=0;i<prices.length;i++)
+		{
+			result=Math.max(result, prices[i]-min);
+			min=Math.min(prices[i],min);
+		}
+		System.out.println("Maximim profit obtained is "+result);
+	}
+
+
+	private static void maximumSubArray() {
+		int[] arr={-2,1,-3,4,-1,2,1,-5,4};
+		int sum=arr[0];
+		int max=arr[0];
+		for(int i=1;i<arr.length;i++)
+		{
+			sum=Math.max(sum+arr[i],arr[i]);
+			max=Math.max(max, sum);
+		}
+		System.out.println("maximun added element foudn is"+max);
+	}
+
+
+	// olog n
+	private static Set<Integer> intersectionOfTwoArrays() {
+		int[] nums1 = {1, 2, 2, 1},nums2 = {2, 2};
+		HashSet<Integer> set1=new HashSet<Integer>();
+	       for(int val:nums1){
+	           set1.add(val);
+	       }
+	    HashSet<Integer> set2=new HashSet<Integer>();
+	       for(int val:nums1){
+	           if(set1.contains(val))
+	        	   set2.add(val);
+	       }
+	   
+	   int[] result=new int[set2.size()];int i=0;
+	       for(int x:set2)
+	       {
+	           result[i++]=x;
+	       }
+	       System.out.println("intersection of two arrays::"+set2);
+	       return set2;
+	}
+
+	private static void bullsAndCows() {
+		String secret="1807";
+		String hint="7810";
+		int bull=0,cow=0;
+		for(int i=0;i<secret.length();i++)
+		{
+			if(secret.charAt(i)==hint.charAt(i))
+			{
+				bull++;
+			}
+			else
+				cow++;
+		}
+		System.out.println(bull+"A"+cow+"B");
 	}
 
 	private static void eqlibriumIndexOfArray() {
@@ -71,19 +240,19 @@ public class RandomPractise {
 		}
 		for(int i=0;i<arr.length;i++)
 		{
-		sum-=arr[i];	// this is right sum
-		if(sum==leftSum)
-		{
-			System.out.println(arr[i]);
-		}
-		leftSum+=arr[i];
+			sum-=arr[i];	// this is right sum
+			if(sum==leftSum)
+			{
+				System.out.println(arr[i]);
+			}
+			leftSum+=arr[i];
 		}
 	}
 	
 
 	//similar to union of two arrays
 	private static void mergeTwosortedLists() {
-		// TODO Auto-generated method stub
+	
 		int[] arr1 = {1, 3, 4, 5, 7};
 		int[] arr2= {2, 3, 5, 6};
 		int i=0,j=0,k=0;
@@ -92,34 +261,30 @@ public class RandomPractise {
 		{
 			if(arr1[i]<arr2[j])
 			{
-			mergedList[k]=arr1[i];
-			k++;
+			mergedList[k++]=arr1[i];
 			i++;
 			}
 			else if(arr1[i]>arr2[j])
 			{
-				mergedList[k]=arr2[j];
-				j++;k++;
+				mergedList[k++]=arr2[j];
+				j++;
 			}
 			else if(arr1[i]==arr2[j])
 			{
-				mergedList[k]=arr1[i];
-				k++;
-				mergedList[k]=arr2[j];
-				k++;
+				mergedList[k++]=arr1[i];
+				mergedList[k++]=arr2[j];
 				i++;j++;
 			}
 		}
-		addRemainingElement(i,j,arr1,arr2);
 		while(i<arr1.length)
 		{
-			mergedList[k]=arr1[i];
-			k++;i++;
+			mergedList[k++]=arr1[i];
+			i++;
 		}
 		while(j<arr2.length)
 		{
-			mergedList[k]=arr2[j];
-			k++;j++;
+			mergedList[k++]=arr2[j];
+			j++;
 		}
 		for(int val:mergedList)
 		System.out.print(val);
@@ -172,7 +337,7 @@ public class RandomPractise {
 	//log n
 	private static void reverseArray()
 	{
-		int[] myArray ={1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+		int[] myArray ={1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 		for(int i=0;i<myArray.length/2;i++)
 		{
 			int temp =myArray[i];
@@ -200,50 +365,6 @@ public class RandomPractise {
 			}
 		}
 		System.out.println("Maximum value in array::"+maxVal);
-	}
-
-	private static void findMissingNumber() {
-		//to find one number
-		int[] iArray = new int[]{1, 2, 3, 5};
-		int n=5;
-		int expected = n*((n+1)/2);
-		int sum=0;
-		for(int i:iArray)
-		{
-			sum=sum+i;
-		}
-		int missingValue=expected-sum;
-		System.out.println("Missing number::"+missingValue);
-		// more than one missing number
-	}
-
-	private static void swapWithoutTemp() {
-		int a = 10;
-        int b = 20;
-        a=a^b;
-        b=a^b;
-        a=a^b;
-        System.out.println("Swapped variables::A::"+a+",B::"+b);
-	}
-
-	private static void reverseInteger() {
-		int value = -1235;
-		int last =0;
-		int reverse=0;
-		boolean neg=false;
-		if(value<0)
-		{
-			value=value*-1;
-			neg=true;
-		}
-		while(value>=1)
-		{
-			last=value%10;
-			reverse=reverse*10+last;
-			value=value/10;
-		}
-		System.out.print("Reverese integer is::");
-		System.out.println((neg==true)?reverse*-1:reverse);
 	}
 
 	private static void findDuplicatesArrayList() {
@@ -298,10 +419,6 @@ public class RandomPractise {
 			{
 				System.out.println("Buzz");
 			}
-			/*else
-			{
-				System.out.println(i);
-			}*/
 		}
 	}
 	
@@ -316,17 +433,16 @@ public class RandomPractise {
 		Map map2 = new HashMap();
 		map2.put("BB","bbb");
 		map2.put("AA","aaa");
-		map2.put("DD","dddd");
+		map2.put("DD","ddd");
 		map2.put("CC","ccc");
 
-		
 		if(map.equals(map2))
 		{
-		    System.out.println("Eql");
+		    System.out.println("both maps are Eql");
 		}
 		else
 		{
-		    System.out.println("Not");
+		    System.out.println("maps are Not euqal");
 		}
 	}
 }
